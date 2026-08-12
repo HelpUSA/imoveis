@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import PropertyCard from '@/components/PropertyCard';
@@ -18,28 +18,146 @@ const PropertyMap = dynamic(() => import('@/components/PropertyMap'), {
 
 export default function ImoveisCatalogClient({
   properties,
-  search,
-  type,
-  transaction,
-  neighborhood,
+  search: initialSearch = '',
+  type: initialType = 'ALL',
+  transaction: initialTransaction = 'ALL',
+  neighborhood: initialNeighborhood = '',
 }: {
   properties: any[];
-  search: string;
-  type: string;
-  transaction: string;
-  neighborhood: string;
+  search?: string;
+  type?: string;
+  transaction?: string;
+  neighborhood?: string;
 }) {
   const pathname = usePathname();
   const [viewMode, setViewMode] = useState<'GRID' | 'MAP'>(
     pathname === '/mapa' ? 'MAP' : 'GRID'
   );
 
+  const [filterSearch, setFilterSearch] = useState(initialSearch);
+  const [filterType, setFilterType] = useState(initialType);
+  const [filterTransaction, setFilterTransaction] = useState(initialTransaction);
+  const [filterNeighborhood, setFilterNeighborhood] = useState(initialNeighborhood);
+
+  const filteredProperties = properties.filter((p) => {
+    if (filterSearch) {
+      const q = filterSearch.toLowerCase();
+      const matchTitle = p.title?.toLowerCase().includes(q);
+      const matchDesc = p.description?.toLowerCase().includes(q);
+      const matchNeigh = p.neighborhood?.toLowerCase().includes(q);
+      const matchCity = p.city?.toLowerCase().includes(q);
+      if (!matchTitle && !matchDesc && !matchNeigh && !matchCity) return false;
+    }
+
+    if (filterType && filterType !== 'ALL') {
+      if (p.propertyType !== filterType) return false;
+    }
+
+    if (filterTransaction && filterTransaction !== 'ALL') {
+      if (p.transactionType !== filterTransaction && p.transactionType !== 'BOTH') return false;
+    }
+
+    if (filterNeighborhood) {
+      if (p.neighborhood !== filterNeighborhood) return false;
+    }
+
+    return true;
+  });
+
   return (
     <div className="space-y-6">
+      {/* Search & Filter Bar */}
+      <div className="glass-panel p-6 rounded-3xl border border-slate-800 space-y-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
+          {/* Search Input */}
+          <div>
+            <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+              Busca Livre
+            </label>
+            <input
+              type="text"
+              value={filterSearch}
+              onChange={(e) => setFilterSearch(e.target.value)}
+              placeholder="Ex: Cobertura, Beira Mar..."
+              className="w-full bg-slate-950 text-white text-xs sm:text-sm rounded-xl px-3 py-2.5 border border-slate-800 focus:border-amber-400 focus:outline-none"
+            />
+          </div>
+
+          {/* Finalidade */}
+          <div>
+            <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+              Finalidade
+            </label>
+            <select
+              value={filterTransaction}
+              onChange={(e) => setFilterTransaction(e.target.value)}
+              className="w-full bg-slate-950 text-white text-xs sm:text-sm rounded-xl px-3 py-2.5 border border-slate-800 focus:border-amber-400 focus:outline-none"
+            >
+              <option value="ALL">Todas</option>
+              <option value="SALE">Venda</option>
+              <option value="RENT">Aluguel</option>
+            </select>
+          </div>
+
+          {/* Tipo */}
+          <div>
+            <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+              Tipo
+            </label>
+            <select
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+              className="w-full bg-slate-950 text-white text-xs sm:text-sm rounded-xl px-3 py-2.5 border border-slate-800 focus:border-amber-400 focus:outline-none"
+            >
+              <option value="ALL">Todos os Tipos</option>
+              <option value="HOUSE">Casa / Mansão</option>
+              <option value="APARTMENT">Apartamento</option>
+              <option value="PENTHOUSE">Cobertura</option>
+              <option value="COMMERCIAL">Comercial</option>
+            </select>
+          </div>
+
+          {/* Bairro */}
+          <div>
+            <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+              Bairro
+            </label>
+            <select
+              value={filterNeighborhood}
+              onChange={(e) => setFilterNeighborhood(e.target.value)}
+              className="w-full bg-slate-950 text-white text-xs sm:text-sm rounded-xl px-3 py-2.5 border border-slate-800 focus:border-amber-400 focus:outline-none"
+            >
+              <option value="">Todos os Bairros</option>
+              <option value="Cabo Branco">Cabo Branco</option>
+              <option value="Manaíra">Manaíra</option>
+              <option value="Altiplano">Altiplano</option>
+              <option value="Tambaú">Tambaú</option>
+              <option value="Bessa">Bessa</option>
+            </select>
+          </div>
+
+          {/* Reset Button */}
+          <div className="flex items-end">
+            <button
+              type="button"
+              onClick={() => {
+                setFilterSearch('');
+                setFilterType('ALL');
+                setFilterTransaction('ALL');
+                setFilterNeighborhood('');
+              }}
+              className="w-full h-[42px] bg-slate-900 border border-slate-800 text-slate-300 font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-slate-800 transition-all text-xs"
+            >
+              Limpar Filtros
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* Header Bar with View Switcher */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
         <p className="text-xs text-slate-300">
-          Exibindo <strong className="text-amber-400 font-bold">{properties.length}</strong> imóveis no sistema HelpUS
+          Exibindo <strong className="text-amber-400 font-bold">{filteredProperties.length}</strong> de {properties.length} imóveis no sistema HelpUS
         </p>
 
         {/* Switcher Buttons */}
@@ -70,22 +188,26 @@ export default function ImoveisCatalogClient({
 
       {/* Content View: Grid or Map */}
       {viewMode === 'GRID' ? (
-        properties.length > 0 ? (
+        filteredProperties.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {properties.map((prop) => (
+            {filteredProperties.map((prop) => (
               <PropertyCard key={prop.id} property={prop} />
             ))}
           </div>
         ) : (
           <div className="text-center py-20 glass-panel rounded-3xl p-8 space-y-4 border border-slate-800">
             <p className="text-lg font-bold text-white">Nenhum imóvel encontrado com os filtros selecionados.</p>
-            <p className="text-xs text-slate-400">Tente ajustar seus critérios de busca ou escolha outro bairro.</p>
-            <Link
-              href="/imoveis"
+            <button
+              onClick={() => {
+                setFilterSearch('');
+                setFilterType('ALL');
+                setFilterTransaction('ALL');
+                setFilterNeighborhood('');
+              }}
               className="inline-block px-5 py-2.5 rounded-xl bg-gold-gradient text-slate-950 font-bold text-xs"
             >
               Ver Todos os Imóveis
-            </Link>
+            </button>
           </div>
         )
       ) : (
@@ -95,7 +217,7 @@ export default function ImoveisCatalogClient({
             <span>Navegue pelo mapa abaixo. Cada marcador exibe o valor do imóvel em destaque (ex: R$ 4,85 Mi). Clique em qualquer pino para abrir a foto, ficha técnica e link de detalhes!</span>
           </div>
           <div className="h-[600px] w-full">
-            <PropertyMap properties={properties} />
+            <PropertyMap properties={filteredProperties} />
           </div>
         </div>
       )}
