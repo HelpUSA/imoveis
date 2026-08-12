@@ -87,7 +87,7 @@ export default async function HomePage() {
         {/* Property Grid */}
         {featuredProperties.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredProperties.map((prop) => (
+            {featuredProperties.map((prop: any) => (
               <PropertyCard key={prop.id} property={prop} />
             ))}
           </div>
@@ -153,7 +153,7 @@ export default async function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {realtors.map((realtor) => (
+          {realtors.map((realtor: any) => (
             <RealtorCard key={realtor.id} realtor={realtor} />
           ))}
         </div>

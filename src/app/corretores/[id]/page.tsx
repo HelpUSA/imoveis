@@ -128,7 +128,7 @@ export default async function RealtorProfilePage({
 
         {realtor.properties.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {realtor.properties.map((prop) => (
+            {realtor.properties.map((prop: any) => (
               <PropertyCard key={prop.id} property={{ ...prop, realtor }} />
             ))}
           </div>

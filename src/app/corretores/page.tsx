@@ -48,7 +48,7 @@ export default async function CorretoresPage() {
       {/* Realtors Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full flex-1">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {realtors.map((realtor) => (
+          {realtors.map((realtor: any) => (
             <RealtorCard key={realtor.id} realtor={realtor} />
           ))}
         </div>
