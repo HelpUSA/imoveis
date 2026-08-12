@@ -77,12 +77,31 @@ export default function PropertyDetailClient({ property }: { property: any }) {
     return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }).format(val);
   };
 
+  const handleFavoriteClick = async () => {
+    try {
+      const res = await fetch('/api/portal/favorites', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ propertyId: property.id }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setIsFavorite(data.favorited);
+      } else {
+        alert('Faça login para salvar seus imóveis favoritos.');
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const handleSubmitLead = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
 
     try {
-      const res = await fetch('/api/leads', {
+      const res = await fetch('/api/portal/leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

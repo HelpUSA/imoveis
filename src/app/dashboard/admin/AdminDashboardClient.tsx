@@ -16,7 +16,7 @@ export default function AdminDashboardClient({
 
   const handleUpdateStatus = async (userId: string, newStatus: string) => {
     try {
-      const res = await fetch('/api/admin/users', {
+      const res = await fetch('/api/portal/admin-users', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, status: newStatus }),

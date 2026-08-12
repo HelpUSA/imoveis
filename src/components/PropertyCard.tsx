@@ -56,7 +56,7 @@ export default function PropertyCard({ property, isFavoriteInitial = false, onFa
     e.stopPropagation();
 
     try {
-      const res = await fetch('/api/favorites', {
+      const res = await fetch('/api/portal/favorites', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ propertyId: property.id }),

@@ -24,7 +24,7 @@ export default function Navbar() {
       setUser(dataUser.user);
 
       if (dataUser.user) {
-        const resFav = await fetch('/api/favorites');
+        const resFav = await fetch('/api/portal/favorites');
         const dataFav = await resFav.json();
         setFavoritesCount(dataFav.favorites?.length || 0);
       }
