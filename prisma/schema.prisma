@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id          String   @id @default(uuid())
+  name        String
+  email       String   @unique
+  password    String
+  role        String   @default("CLIENT") // "ADMIN", "CORRETOR", "CLIENT"
+  status      String   @default("ACTIVE") // "ACTIVE", "PENDING", "BLOCKED"
+  creci       String?
+  phone       String?
+  whatsapp    String?
+  bio         String?
+  avatarUrl   String?
+  coverUrl    String?
+  agencyName  String?
+  properties  Property[]
+  inquiries   LeadInquiry[]
+  favorites   Favorite[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Property {
+  id              String   @id @default(uuid())
+  title           String
+  slug            String   @unique
+  description     String
+  price           Float
+  rentPrice       Float?
+  transactionType String   // "SALE", "RENT", "BOTH"
+  propertyType    String   // "APARTMENT", "HOUSE", "PENTHOUSE", "LAND", "COMMERCIAL"
+  address         String
+  neighborhood    String
+  city            String
+  state           String   @default("PB")
+  zipCode         String?
+  latitude        Float?
+  longitude       Float?
+  bedrooms        Int      @default(0)
+  bathrooms       Int      @default(0)
+  suites          Int      @default(0)
+  parkingSpaces   Int      @default(0)
+  areaTotal       Float    @default(0)
+  areaBuilt       Float?
+  condoFee        Float?
+  iptuFee         Float?
+  featured        Boolean  @default(false)
+  status          String   @default("AVAILABLE") // "AVAILABLE", "RESERVED", "SOLD", "RENTED"
+  viewsCount      Int      @default(0)
+  images          String   // JSON string array of image URLs
+  videoUrl        String?
+  virtualTourUrl  String?
+  amenities       String   // JSON string array of amenities
+  realtorId       String
+  realtor         User     @relation(fields: [realtorId], references: [id], onDelete: Cascade)
+  inquiries       LeadInquiry[]
+  favorites       Favorite[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model LeadInquiry {
+  id          String   @id @default(uuid())
+  propertyId  String
+  property    Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  realtorId   String
+  realtor     User     @relation(fields: [realtorId], references: [id], onDelete: Cascade)
+  clientName  String
+  clientEmail String
+  clientPhone String
+  message     String
+  status      String   @default("NEW") // "NEW", "CONTACTED", "CLOSED"
+  createdAt   DateTime @default(now())
+}
+
+model Favorite {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+}
