@@ -44,14 +44,14 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 glass-panel border-b border-slate-800/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-        {/* Brand Logo */}
+        {/* Brand Logo: HelpUS Imóveis */}
         <Link href="/" className="flex items-center gap-3 group">
           <div className="w-11 h-11 rounded-xl bg-gold-gradient flex items-center justify-center text-slate-950 font-bold shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform">
             <Building2 className="w-6 h-6" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-extrabold text-xl tracking-tight text-white font-serif">PRIME</span>
+              <span className="font-extrabold text-xl tracking-tight text-white font-serif">HelpUS</span>
               <span className="text-xs font-semibold px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/30">
                 IMÓVEIS
               </span>
@@ -76,6 +76,19 @@ export default function Navbar() {
           >
             Buscar Imóveis
           </Link>
+
+          {/* Direct Map Link */}
+          <Link
+            href="/mapa"
+            className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-all ${
+              pathname === '/mapa'
+                ? 'bg-amber-500 text-slate-950 shadow'
+                : 'bg-amber-500/10 text-amber-300 border border-amber-500/30 hover:bg-amber-500/20'
+            }`}
+          >
+            <Map className="w-3.5 h-3.5" /> Ver Mapa de Imóveis
+          </Link>
+
           <Link
             href="/corretores"
             className={`hover:text-amber-400 transition-colors ${pathname.startsWith('/corretores') ? 'text-amber-400 font-semibold' : ''}`}
@@ -225,6 +238,13 @@ export default function Navbar() {
             className="block text-slate-200 font-medium hover:text-amber-400"
           >
             Buscar Imóveis
+          </Link>
+          <Link
+            href="/mapa"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block text-amber-300 font-bold hover:text-amber-400"
+          >
+            🗺️ Ver Imóveis no Mapa
           </Link>
           <Link
             href="/corretores"

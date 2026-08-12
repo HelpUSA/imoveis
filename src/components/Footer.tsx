@@ -12,10 +12,10 @@ export default function Footer() {
               <div className="w-10 h-10 rounded-xl bg-gold-gradient flex items-center justify-center text-slate-950 font-bold shadow-md shadow-amber-500/20">
                 <Building2 className="w-5 h-5" />
               </div>
-              <span className="font-extrabold text-xl tracking-tight text-white font-serif">PRIME IMÓVEIS</span>
+              <span className="font-extrabold text-xl tracking-tight text-white font-serif">HelpUS IMÓVEIS</span>
             </div>
             <p className="text-sm leading-relaxed text-slate-400">
-              A plataforma guarda-chuva de corretores credenciados que reúne os melhores imóveis de alto padrão e luxo da região.
+              A plataforma guarda-chuva da HelpUS que reúne os melhores imóveis de alto padrão e corretores credenciados da região.
             </p>
             <div className="pt-2 flex items-center gap-2 text-xs text-amber-400 font-semibold">
               <ShieldCheck className="w-4 h-4 text-amber-400" />
@@ -38,8 +38,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/imoveis?featured=true" className="hover:text-amber-400 transition-colors">
-                  Destaques Exclusivos
+                <Link href="/mapa" className="text-amber-300 hover:text-amber-400 transition-colors font-bold">
+                  🗺️ Mapa de Imóveis
                 </Link>
               </li>
               <li>
@@ -55,8 +55,7 @@ export default function Footer() {
             <h4 className="text-white font-bold text-sm tracking-wider uppercase">Corretores em Destaque</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/corretores/waleska" className="text-amber-300 font-semibold hover:underline flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                <Link href="/corretores" className="hover:text-amber-400 transition-colors">
                   Waleska Imóveis Luxo (CRECI 8492-F)
                 </Link>
               </li>
@@ -67,7 +66,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/cadastro" className="text-xs text-amber-400/80 hover:text-amber-300 hover:underline pt-2 block">
-                  👉 É corretor? Cadastre-se na plataforma
+                  👉 É corretor? Cadastre-se na plataforma HelpUS
                 </Link>
               </li>
             </ul>
@@ -87,7 +86,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-amber-400 shrink-0" />
-                <span>contato@primeimoveis.com.br</span>
+                <span>contato@helpus.com.br</span>
               </div>
             </div>
           </div>
@@ -95,7 +94,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs gap-4">
-          <p>© {new Date().getFullYear()} Prime Imóveis. Todos os direitos reservados.</p>
+          <p>© {new Date().getFullYear()} HelpUS Imóveis. Todos os direitos reservados.</p>
           <p className="flex items-center gap-1">
             Desenvolvido com <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" /> para Corretores de Imóveis.
           </p>

@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import PropertyCard from '@/components/PropertyCard';
 import Link from 'next/link';
@@ -28,14 +29,17 @@ export default function ImoveisCatalogClient({
   transaction: string;
   neighborhood: string;
 }) {
-  const [viewMode, setViewMode] = useState<'GRID' | 'MAP'>('GRID');
+  const pathname = usePathname();
+  const [viewMode, setViewMode] = useState<'GRID' | 'MAP'>(
+    pathname === '/mapa' ? 'MAP' : 'GRID'
+  );
 
   return (
     <div className="space-y-6">
       {/* Header Bar with View Switcher */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
         <p className="text-xs text-slate-300">
-          Exibindo <strong className="text-amber-400 font-bold">{properties.length}</strong> imóveis encontrados
+          Exibindo <strong className="text-amber-400 font-bold">{properties.length}</strong> imóveis no sistema HelpUS
         </p>
 
         {/* Switcher Buttons */}
@@ -86,9 +90,9 @@ export default function ImoveisCatalogClient({
         )
       ) : (
         <div className="space-y-4">
-          <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-semibold flex items-center gap-2">
+          <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-semibold flex items-center gap-2">
             <Map className="w-4 h-4 text-amber-400 shrink-0" />
-            <span>Navegue pelo mapa abaixo. Cada marcador exibe o preço do imóvel. Clique para ver a foto e detalhes completos!</span>
+            <span>Navegue pelo mapa abaixo. Cada marcador exibe o valor do imóvel em destaque (ex: R$ 4,85 Mi). Clique em qualquer pino para abrir a foto, ficha técnica e link de detalhes!</span>
           </div>
           <div className="h-[600px] w-full">
             <PropertyMap properties={properties} />
