@@ -76,7 +76,7 @@ export default function AddPropertyPage() {
     setError('');
 
     try {
-      const res = await fetch('/api/properties', {
+      const res = await fetch('/api/portal/properties', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

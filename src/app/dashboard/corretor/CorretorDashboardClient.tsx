@@ -38,7 +38,7 @@ export default function CorretorDashboardClient({
     if (!confirm('Tem certeza de que deseja excluir este imóvel?')) return;
 
     try {
-      const res = await fetch(`/api/properties?id=${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/portal/properties?id=${id}`, { method: 'DELETE' });
       if (res.ok) {
         setProperties(properties.filter((p) => p.id !== id));
       } else {
@@ -53,7 +53,7 @@ export default function CorretorDashboardClient({
     const nextStatus = currentStatus === 'AVAILABLE' ? 'RESERVED' : currentStatus === 'RESERVED' ? 'SOLD' : 'AVAILABLE';
 
     try {
-      const res = await fetch(`/api/properties?id=${id}`, {
+      const res = await fetch(`/api/portal/properties?id=${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: nextStatus }),

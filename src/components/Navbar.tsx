@@ -145,7 +145,7 @@ export default function Navbar() {
                   {user.role === 'CORRETOR' && (
                     <>
                       <Link
-                        href="/dashboard/corretor"
+                        href="/dashboard"
                         onClick={() => setUserDropdownOpen(false)}
                         className="flex items-center gap-2 px-3 py-2 rounded-xl text-slate-200 hover:bg-amber-500/10 hover:text-amber-300 transition-colors"
                       >
@@ -165,7 +165,7 @@ export default function Navbar() {
 
                   {user.role === 'CLIENT' && (
                     <Link
-                      href="/dashboard/cliente"
+                      href="/dashboard"
                       onClick={() => setUserDropdownOpen(false)}
                       className="flex items-center gap-2 px-3 py-2 rounded-xl text-slate-200 hover:bg-amber-500/10 hover:text-amber-300 transition-colors"
                     >
@@ -176,7 +176,7 @@ export default function Navbar() {
 
                   {user.role === 'ADMIN' && (
                     <Link
-                      href="/dashboard/admin"
+                      href="/dashboard"
                       onClick={() => setUserDropdownOpen(false)}
                       className="flex items-center gap-2 px-3 py-2 rounded-xl text-slate-200 hover:bg-amber-500/10 hover:text-amber-300 transition-colors"
                     >
