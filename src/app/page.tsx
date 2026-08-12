@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { ArrowRight, ShieldCheck, Sparkles, Building2, Users, MapPin, CheckCircle2, MessageSquare, Award } from 'lucide-react';
 
-export const revalidate = 0;
+export const revalidate = 60;
 
 export default async function HomePage() {
   const featuredProperties = await prisma.property.findMany({

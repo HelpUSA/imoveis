@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import { Search } from 'lucide-react';
 
-export const revalidate = 0;
+export const revalidate = 60;
 
 interface SearchParams {
   search?: string;

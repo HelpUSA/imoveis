@@ -4,7 +4,7 @@ import ImoveisCatalogClient from '../imoveis/ImoveisCatalogClient';
 import { prisma } from '@/lib/prisma';
 import { Map, Search } from 'lucide-react';
 
-export const revalidate = 0;
+export const revalidate = 60;
 
 export default async function MapaPage() {
   const properties = await prisma.property.findMany({

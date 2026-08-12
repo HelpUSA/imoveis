@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import { ShieldCheck, Phone, MessageCircle, Building2, MapPin, Award } from 'lucide-react';
 
-export const revalidate = 0;
+export const revalidate = 60;
 
 export default async function RealtorProfilePage({
   params,

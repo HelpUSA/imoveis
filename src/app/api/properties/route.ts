@@ -6,6 +6,29 @@ export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
 
+    const id = searchParams.get('id');
+    if (id) {
+      const property = await prisma.property.findUnique({
+        where: { id },
+        include: {
+          realtor: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              creci: true,
+              whatsapp: true,
+              avatarUrl: true,
+              agencyName: true,
+            },
+          },
+        },
+      });
+
+      if (!property) return NextResponse.json({ error: 'Imóvel não encontrado.' }, { status: 404 });
+      return NextResponse.json({ property });
+    }
+
     const search = searchParams.get('search') || '';
     const type = searchParams.get('type') || '';
     const transaction = searchParams.get('transaction') || '';
@@ -75,7 +98,7 @@ export async function POST(req: Request) {
   try {
     const user = await getCurrentUser();
     if (!user || (user.role !== 'CORRETOR' && user.role !== 'ADMIN')) {
-      return NextResponse.json({ error: 'Não autorizado. Apenas corretores ou administradores podem cadastrar imóveis.' }, { status: 403 });
+      return NextResponse.json({ error: 'Não autorizado.' }, { status: 403 });
     }
 
     const body = await req.json();
@@ -153,7 +176,43 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true, property: newProperty });
   } catch (error: any) {
-    console.error('Error creating property:', error);
     return NextResponse.json({ error: 'Erro ao cadastrar imóvel.' }, { status: 500 });
+  }
+}
+
+export async function PUT(req: Request) {
+  try {
+    const user = await getCurrentUser();
+    if (!user) return NextResponse.json({ error: 'Não autorizado.' }, { status: 401 });
+
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
+    if (!id) return NextResponse.json({ error: 'ID necessário.' }, { status: 400 });
+
+    const body = await req.json();
+    const updated = await prisma.property.update({
+      where: { id },
+      data: body,
+    });
+
+    return NextResponse.json({ success: true, property: updated });
+  } catch (e) {
+    return NextResponse.json({ error: 'Erro ao atualizar imóvel.' }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: Request) {
+  try {
+    const user = await getCurrentUser();
+    if (!user) return NextResponse.json({ error: 'Não autorizado.' }, { status: 401 });
+
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
+    if (!id) return NextResponse.json({ error: 'ID necessário.' }, { status: 400 });
+
+    await prisma.property.delete({ where: { id } });
+    return NextResponse.json({ success: true });
+  } catch (e) {
+    return NextResponse.json({ error: 'Erro ao excluir imóvel.' }, { status: 500 });
   }
 }

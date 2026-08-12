@@ -4,7 +4,7 @@ import RealtorCard from '@/components/RealtorCard';
 import { prisma } from '@/lib/prisma';
 import { Users, ShieldCheck } from 'lucide-react';
 
-export const revalidate = 0;
+export const revalidate = 60;
 
 export default async function CorretoresPage() {
   const realtors = await prisma.user.findMany({
